@@ -1,84 +1,190 @@
-# Turborepo starter
+# 🧠 Intelekt
 
-This Turborepo starter is maintained by the Turborepo core team.
+A full-stack, real-time **Live Coding Interview Platform** built for modern technical assessments. Intelekt combines video calling, collaborative code editing, live screen monitoring, and gaze-based anti-cheating AI to ensure fair, insightful, and scalable interviews.
 
-## Using this example
+---
 
-Run the following command:
+## 🚀 Features
 
-```sh
-npx create-turbo@latest
+- 🎥 **Real-time video/audio** via mediasoup SFU
+- 🧑‍💻 **Collaborative coding editor** using Monaco + Yjs
+- 🔍 **Live screen and gaze monitoring** for candidate behavior tracking
+- ⚠️ **AI-powered anti-cheating detection**
+- 🧪 **Isolated code execution** via Docker sandbox
+- 🌐 **Multi-participant interviews** with role-based views
+- 📊 **Live analytics dashboard** for interviewers
+- 🧱 Scalable **Turborepo monorepo** architecture
+
+---
+
+## 🏗️ Monorepo Structure
+
+```bash
+intelekt/
+├── apps/
+│   ├── frontend/            # Next.js app with Monaco + Yjs
+│   ├── signaling-server/    # TypeScript WebRTC signaling server (mediasoup)
+│   ├── code-runner/         # Docker-based code executor (TypeScript)
+│   ├── monitor-service/     # Python ML microservice for gaze detection
+│   └── api-server/          # TypeScript API server (NestJS/Fastify)
+├── packages/
+│   ├── ui/                  # Shared UI components
+│   ├── types/               # Shared TypeScript types/interfaces
+│   ├── utils/               # Reusable helpers, logger, config
+├── infra/                   # Docker, K8s manifests, deployment config
+├── .github/                 # GitHub Actions workflows
+├── turbo.json               # Turborepo pipeline config
+└── README.md
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## ⚙️ Tech Stack
 
-### Apps and Packages
+| Layer              | Technologies                                  |
+| ------------------ | --------------------------------------------- |
+| **Frontend**       | Next.js, TypeScript, TailwindCSS, Monaco, Yjs |
+| **Signaling**      | Node.js, TypeScript, mediasoup, WebSockets    |
+| **Code Execution** | Docker, Node.js, Dockerode                    |
+| **AI/ML**          | Python, OpenCV, MediaPipe, FastAPI            |
+| **Backend API**    | NestJS or Fastify (TypeScript)                |
+| **Messaging**      | Redis / Kafka for real-time coordination      |
+| **Infra**          | Docker, Kubernetes, GitHub Actions            |
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+---
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## 🛠️ Getting Started
 
-### Utilities
+### 1. Clone the Repository
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+git clone https://github.com/your-username/intelekt.git
+cd intelekt
+pnpm install
 ```
 
-### Develop
+### 2. Development
 
-To develop all apps and packages, run the following command:
+Start all apps:
 
-```
-cd my-turborepo
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+Or run individual apps:
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+pnpm dev --filter frontend
+pnpm dev --filter signaling-server
+pnpm dev --filter code-runner
+pnpm dev --filter api-server
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 3. Environment Variables
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+Each app has its own `.env.example`. Copy and configure:
 
+```bash
+cp apps/frontend/.env.example apps/frontend/.env
 ```
-npx turbo link
+
+Repeat for other apps.
+
+---
+
+## 🧪 Code Runner
+
+* Accepts code snippets via API
+* Spawns secure Docker containers per language
+* Supports: JavaScript, Python, C++
+* Returns stdout, stderr, and execution time
+
+---
+
+## 👁️‍🗨️ Monitor Service
+
+* Tracks face position, gaze direction, and head orientation
+* Analyzes video frames using OpenCV + MediaPipe
+* Sends real-time cheating alerts to interviewer dashboard
+
+---
+
+## 📦 Shared Packages
+
+* `types`: Shared TypeScript types (`User`, `Room`, `Session`)
+* `ui`: Button, layout, editor wrapper components
+* `utils`: Common utility functions and config
+
+---
+
+## 🧱 Turborepo
+
+Turbo powers the monorepo with blazing-fast builds and dev workflows:
+
+```json
+{
+  "pipeline": {
+    "dev": {
+      "dependsOn": ["^dev"],
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**"]
+    }
+  }
+}
 ```
 
-## Useful Links
+---
 
-Learn more about the power of Turborepo:
+## 📦 Deployment
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+* Docker Compose (for local dev)
+* Kubernetes manifests (for scalable deployments)
+* GitHub Actions CI/CD (auto-build + deploy)
+
+Coming soon in `infra/`
+
+---
+
+## 💡 Naming
+
+> **Intelekt**: A fusion of “intellect” and “tech,” representing smart, secure, and insightful interviews.
+
+---
+
+## 👥 Contributors
+
+* **Your Name** – System Architect, Fullstack Developer, AI Integrator
+
+---
+
+## 📄 License
+
+MIT License. Free to use, improve, and contribute.
+
+---
+
+## 🌐 Future Plans
+
+* Built-in calendar and interview scheduling
+* Chatbot-based candidate onboarding
+* ML-based scoring & candidate ranking
+* Interview playback + annotation
+
+---
+
+## 🧩 Related Technologies
+
+* Mediasoup
+* Monaco Editor + Yjs
+* Docker + Dockerode
+* OpenCV + MediaPipe
+* FastAPI / NestJS
+* Redis / Kafka
+* Turborepo
+
+---
+
+Feel free to contribute, fork, and build on top of **Intelekt**. Let's redefine the way coding interviews are done.
